@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>EmbedAI Assistant | Embed with Code</title>
+
+    <meta
+        name="description"
+        content="AI Assistant for Electronics, Embedded Systems, IoT and Robotics"
+    >
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                E
+            </div>
+
+            <div>
+                <h2>EmbedAI</h2>
+
+                <span>
+                    by Embed with Code
+                </span>
+            </div>
+
+        </div>
+
+
+        <a
+            href="../"
+            class="back-btn"
+        >
+            ← AI Tools
+        </a>
+
+
+        <button
+            id="newChatBtn"
+            class="new-chat"
+        >
+            + New Chat
+        </button>
+
+
+        <div class="sidebar-title">
+            AI ASSISTANT
+        </div>
+
+
+        <div class="info">
+
+            <div>
+                🤖 Electronics AI
+            </div>
+
+            <div>
+                ⚡ Embedded Systems
+            </div>
+
+            <div>
+                🌐 IoT & Robotics
+            </div>
+
+            <div>
+                💻 Programming
+            </div>
+
+        </div>
+
+
+        <div class="sidebar-bottom">
+
+            <p>
+                Embed with Code
+            </p>
+
+            <small>
+                Learn • Build • Innovate
+            </small>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main">
+
+
+        <!-- HEADER -->
+
+        <header class="topbar">
+
+            <div>
+
+                <h1>
+                    EmbedAI Assistant
+                </h1>
+
+                <p>
+                    Your AI Engineer for Electronics,
+                    IoT & Robotics
+                </p>
+
+            </div>
+
+
+            <div class="status">
+
+                <span></span>
+
+                AI Online
+
+            </div>
+
+        </header>
+
+
+
+        <!-- CHAT -->
+
+        <section
+            id="chatContainer"
+            class="chat-container"
+        >
+
+
+            <!-- WELCOME -->
+
+            <div
+                id="welcome"
+                class="welcome"
+            >
+
+                <div class="ai-logo">
+                    🤖
+                </div>
+
+
+                <h2>
+                    What do you want to build?
+                </h2>
+
+
+                <p>
+                    Ask me anything about electronics,
+                    Arduino, ESP32, IoT or robotics.
+                </p>
+
+
+                <div class="suggestions">
+
+
+                    <button class="suggestion">
+
+                        🔌 Connect HC-SR04
+                        to ESP32
+
+                    </button>
+
+
+                    <button class="suggestion">
+
+                        💻 Generate Arduino code
+
+                    </button>
+
+
+                    <button class="suggestion">
+
+                        🤖 Build an obstacle
+                        avoiding robot
+
+                    </button>
+
+
+                    <button class="suggestion">
+
+                        🌱 Smart irrigation
+                        system
+
+                    </button>
+
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- INPUT -->
+
+        <div class="input-area">
+
+            <div class="input-box">
+
+                <textarea
+                    id="messageInput"
+                    placeholder="Ask EmbedAI..."
+                    rows="1"
+                ></textarea>
+
+
+                <button
+                    id="sendBtn"
+                    class="send-btn"
+                >
+                    ➤
+                </button>
+
+            </div>
+
+
+            <p class="disclaimer">
+
+                AI can make mistakes.
+                Verify electrical connections before
+                powering hardware.
+
+            </p>
+
+        </div>
+
+
+    </main>
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+
+</html>

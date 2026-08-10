@@ -1,0 +1,16 @@
+{
+  "name": "embed-with-code",
+  "version": "1.0.0",
+  "description": "Embed with Code - AI Tools and Embedded Systems Platform",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "netlify dev"
+  },
+  "devDependencies": {
+    "netlify-cli": "^23.0.0"
+  },
+  "dependencies": {
+    "@google/genai": "^2.16.0"
+  }
+}
