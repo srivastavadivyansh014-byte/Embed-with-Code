@@ -14,8 +14,3 @@
   status = 200
   force = true
 
-[[redirects]]
-  from = "/ai-tools/projects/face-recognition/*"
-  to = "/ai-tools/projects/face-recognition/build/:splat"
-  status = 200
-  force = true

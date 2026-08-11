@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "netlify dev",
-    "build": "parcel build ai-tools/projects/face-recognition/index.html --dist-dir ai-tools/projects/face-recognition/build --public-url ./",
+    "build": "parcel build ai-tools/projects/face-recognition/index.html --dist-dir ai-tools/projects/face-recognition/build --public-url /ai-tools/projects/face-recognition/build/",
     "face-dev": "parcel ai-tools/projects/face-recognition/index.html --port 3000"
   },
   "devDependencies": {
