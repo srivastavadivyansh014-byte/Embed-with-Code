@@ -4,15 +4,13 @@
   "description": "Embed with Code - AI Tools and Embedded Systems Platform",
   "private": true,
   "type": "module",
-  
   "scripts": {
     "dev": "netlify dev",
     "build": "parcel build ai-tools/projects/face-recognition/index.html --dist-dir ai-tools/projects/face-recognition/dist --public-url ./",
     "face-dev": "parcel ai-tools/projects/face-recognition/index.html --port 3000"
   },
   "devDependencies": {
-    "netlify-cli": "^23.0.0",
-    "parcel": "^2.15.4"
+    "netlify-cli": "^23.0.0"
   },
   "dependencies": {
     "@google/genai": "^2.16.0",

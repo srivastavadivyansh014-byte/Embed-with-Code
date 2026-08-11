@@ -8,8 +8,18 @@
 [dev]
   port = 8888
 
+
+# Face Recognition page
 [[redirects]]
   from = "/ai-tools/projects/face-recognition/"
   to = "/ai-tools/projects/face-recognition/dist/index.html"
+  status = 200
+  force = true
+
+
+# Face Recognition assets
+[[redirects]]
+  from = "/ai-tools/projects/face-recognition/*"
+  to = "/ai-tools/projects/face-recognition/dist/:splat"
   status = 200
   force = true
