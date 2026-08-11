@@ -10,12 +10,12 @@
 
 [[redirects]]
   from = "/ai-tools/projects/face-recognition/"
-  to = "/ai-tools/projects/face-recognition/dist/index.html"
+  to = "/ai-tools/projects/face-recognition/build/index.html"
   status = 200
   force = true
 
 [[redirects]]
   from = "/ai-tools/projects/face-recognition/*"
-  to = "/ai-tools/projects/face-recognition/dist/:splat"
+  to = "/ai-tools/projects/face-recognition/build/:splat"
   status = 200
   force = true
