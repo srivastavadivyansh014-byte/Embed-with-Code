@@ -2,19 +2,29 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>AI Tools | Embed with Code</title>
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+    <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    >
 
     <style>
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
 
         body {
             font-family: Inter, sans-serif;
@@ -23,15 +33,22 @@
             min-height: 100vh;
         }
 
+
         .container {
             width: min(1100px, 92%);
             margin: auto;
         }
 
+
+        /* ==============================
+           HEADER
+        ============================== */
+
         header {
             padding: 35px 0;
             text-align: center;
         }
+
 
         .logo {
             font-size: 14px;
@@ -40,172 +57,420 @@
             letter-spacing: 1px;
         }
 
+
         h1 {
             font-size: clamp(35px, 6vw, 65px);
             margin-top: 15px;
         }
 
+
         .subtitle {
             color: #8b98a8;
             margin-top: 15px;
             font-size: 16px;
+            line-height: 1.6;
         }
+
+
+        /* ==============================
+           TOOLS GRID
+        ============================== */
 
         .tools {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(250px, 1fr)
+                );
+
             gap: 20px;
+
             margin-top: 50px;
         }
 
+
+        /* ==============================
+           CARD
+        ============================== */
+
         .tool-card {
             background: #131920;
+
             border: 1px solid #26303b;
+
             border-radius: 18px;
+
             padding: 28px;
+
             text-decoration: none;
+
             color: white;
-            transition: 0.25s;
+
+            transition:
+                transform 0.25s ease,
+                border-color 0.25s ease,
+                box-shadow 0.25s ease;
         }
+
 
         .tool-card:hover {
             transform: translateY(-5px);
+
             border-color: #5eead4;
+
+            box-shadow:
+                0 10px 30px
+                rgba(94, 234, 212, 0.08);
         }
+
+
+        /* ==============================
+           ICON
+        ============================== */
 
         .icon {
             font-size: 35px;
             margin-bottom: 20px;
         }
 
+
+        /* ==============================
+           TITLE
+        ============================== */
+
         .tool-card h2 {
             font-size: 20px;
             margin-bottom: 10px;
         }
 
+
+        /* ==============================
+           DESCRIPTION
+        ============================== */
+
         .tool-card p {
             color: #8b98a8;
+
             line-height: 1.6;
+
             font-size: 14px;
         }
 
+
+        /* ==============================
+           OPEN BUTTON
+        ============================== */
+
         .open {
             display: inline-block;
+
             margin-top: 20px;
+
             color: #5eead4;
+
             font-size: 13px;
+
             font-weight: 600;
         }
 
+
+        /* ==============================
+           PROJECT CARD
+        ============================== */
+
+        .project-card {
+            border-color: #30443f;
+        }
+
+
+        .project-card:hover {
+            border-color: #5eead4;
+        }
+
+
+        .project-badge {
+            display: inline-block;
+
+            margin-bottom: 14px;
+
+            padding: 5px 9px;
+
+            border-radius: 20px;
+
+            background: rgba(
+                94,
+                234,
+                212,
+                0.08
+            );
+
+            color: #5eead4;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 0.5px;
+
+            text-transform: uppercase;
+        }
+
+
+        /* ==============================
+           FOOTER
+        ============================== */
+
         footer {
             text-align: center;
+
             color: #596575;
+
             font-size: 12px;
+
             padding: 50px 0 30px;
         }
+
+
+        /* ==============================
+           MOBILE
+        ============================== */
+
+        @media (max-width: 600px) {
+
+            header {
+                padding: 25px 0;
+            }
+
+
+            .subtitle {
+                font-size: 14px;
+            }
+
+
+            .tools {
+                margin-top: 30px;
+
+                grid-template-columns: 1fr;
+
+                gap: 15px;
+            }
+
+
+            .tool-card {
+                padding: 22px;
+            }
+
+        }
+
     </style>
+
 </head>
+
 
 <body>
 
-    <div class="container">
 
-        <header>
+<div class="container">
 
-            <div class="logo">
-                EMBED WITH CODE
+
+    <!-- ==================================
+         HEADER
+    =================================== -->
+
+    <header>
+
+        <div class="logo">
+            EMBED WITH CODE
+        </div>
+
+
+        <h1>
+            AI Tools
+        </h1>
+
+
+        <p class="subtitle">
+
+            AI-powered tools for Electronics,
+            Embedded Systems,
+            IoT & Robotics
+
+        </p>
+
+    </header>
+
+
+
+    <!-- ==================================
+         TOOLS
+    =================================== -->
+
+    <section class="tools">
+
+
+        <!-- =================================
+             AI ASSISTANT
+        ================================== -->
+
+        <a
+            href="ai-assistant/"
+            class="tool-card"
+        >
+
+            <div class="icon">
+                🤖
             </div>
 
-            <h1>AI Tools</h1>
 
-            <p class="subtitle">
-                AI-powered tools for Electronics, Embedded Systems,
-                IoT & Robotics
+            <h2>
+                AI Assistant
+            </h2>
+
+
+            <p>
+
+                Ask questions about Arduino,
+                ESP32, Raspberry Pi, IoT,
+                robotics, electronics and
+                embedded systems.
+
             </p>
 
-        </header>
+
+            <span class="open">
+                Open Assistant →
+            </span>
+
+        </a>
 
 
-        <section class="tools">
 
-            <!-- AI ASSISTANT -->
+        <!-- =================================
+             START IOT PROJECTS
+        ================================== -->
 
-            <a href="ai-assistant/" class="tool-card">
+        <a
+            href="projects/"
+            class="tool-card project-card"
+        >
 
-                <div class="icon">
-                    🤖
-                </div>
-
-                <h2>
-                    AI Assistant
-                </h2>
-
-                <p>
-                    Ask questions about Arduino, ESP32,
-                    Raspberry Pi, IoT, robotics,
-                    electronics and embedded systems.
-                </p>
-
-                <span class="open">
-                    Open Assistant →
-                </span>
-
-            </a>
-
-
-            <!-- FUTURE TOOLS -->
-
-            <div class="tool-card">
-
-                <div class="icon">
-                    💻
-                </div>
-
-                <h2>
-                    Code Generator
-                </h2>
-
-                <p>
-                    Generate Arduino, ESP32,
-                    Python and embedded code using AI.
-                </p>
-
-                <span class="open">
-                    Coming Soon
-                </span>
-
+            <div class="icon">
+                🚀
             </div>
 
 
-            <div class="tool-card">
+            <span class="project-badge">
+                Build & Connect
+            </span>
 
-                <div class="icon">
-                    🔌
-                </div>
 
-                <h2>
-                    Circuit Assistant
-                </h2>
+            <h2>
+                Start IoT Projects
+            </h2>
 
-                <p>
-                    Get wiring, component and
-                    circuit suggestions using AI.
-                </p>
 
-                <span class="open">
-                    Coming Soon
-                </span>
+            <p>
 
+                Build real-world AI and IoT
+                projects using ESP32, Arduino,
+                sensors, actuators, robotics
+                and embedded systems.
+
+            </p>
+
+
+            <span class="open">
+                Explore Projects →
+            </span>
+
+        </a>
+
+
+
+        <!-- =================================
+             CODE GENERATOR
+        ================================== -->
+
+        <div class="tool-card">
+
+            <div class="icon">
+                💻
             </div>
 
-        </section>
+
+            <h2>
+                Code Generator
+            </h2>
 
 
-        <footer>
-            Embed with Code • Learn | Build | Innovate
-        </footer>
+            <p>
 
-    </div>
+                Generate Arduino, ESP32,
+                Python and embedded code
+                using AI.
+
+            </p>
+
+
+            <span class="open">
+                Coming Soon
+            </span>
+
+        </div>
+
+
+
+        <!-- =================================
+             CIRCUIT ASSISTANT
+        ================================== -->
+
+        <div class="tool-card">
+
+            <div class="icon">
+                🔌
+            </div>
+
+
+            <h2>
+                Circuit Assistant
+            </h2>
+
+
+            <p>
+
+                Get wiring, component and
+                circuit suggestions using AI.
+
+            </p>
+
+
+            <span class="open">
+                Coming Soon
+            </span>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- ==================================
+         FOOTER
+    =================================== -->
+
+    <footer>
+
+        Embed with Code •
+        Learn | Build | Innovate
+
+    </footer>
+
+
+</div>
+
 
 </body>
 

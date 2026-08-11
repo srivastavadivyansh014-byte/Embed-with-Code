@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>IoT Projects | Embed with Code</title>
+
+    <meta
+        name="description"
+        content="Build AI, IoT, ESP32, Arduino and embedded system projects with Embed with Code."
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    >
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            font-family: Inter, sans-serif;
+
+            background: #0b0f14;
+
+            color: white;
+
+            min-height: 100vh;
+        }
+
+
+        .container {
+
+            width: min(1150px, 92%);
+
+            margin: auto;
+        }
+
+
+        /* =====================================
+           HEADER
+        ====================================== */
+
+        header {
+
+            padding: 30px 0 20px;
+        }
+
+
+        .back {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            color: #8b98a8;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            margin-bottom: 35px;
+
+            transition: 0.2s;
+        }
+
+
+        .back:hover {
+
+            color: #5eead4;
+        }
+
+
+        .logo {
+
+            color: #5eead4;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            letter-spacing: 1px;
+        }
+
+
+        h1 {
+
+            font-size: clamp(
+                35px,
+                6vw,
+                60px
+            );
+
+            margin-top: 12px;
+
+            line-height: 1.1;
+        }
+
+
+        .subtitle {
+
+            color: #8b98a8;
+
+            margin-top: 15px;
+
+            max-width: 650px;
+
+            line-height: 1.7;
+
+            font-size: 15px;
+        }
+
+
+        /* =====================================
+           SECTION
+        ====================================== */
+
+        .section-title {
+
+            margin-top: 55px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .section-title h2 {
+
+            font-size: 22px;
+        }
+
+
+        .section-title p {
+
+            color: #667384;
+
+            font-size: 13px;
+
+            margin-top: 6px;
+        }
+
+
+        /* =====================================
+           PROJECT GRID
+        ====================================== */
+
+        .projects {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(280px, 1fr)
+                );
+
+            gap: 20px;
+        }
+
+
+        /* =====================================
+           PROJECT CARD
+        ====================================== */
+
+        .project-card {
+
+            position: relative;
+
+            display: flex;
+
+            flex-direction: column;
+
+            background: #131920;
+
+            border: 1px solid #26303b;
+
+            border-radius: 20px;
+
+            padding: 26px;
+
+            min-height: 280px;
+
+            text-decoration: none;
+
+            color: white;
+
+            transition:
+                transform 0.25s ease,
+                border-color 0.25s ease,
+                box-shadow 0.25s ease;
+        }
+
+
+        .project-card:hover {
+
+            transform: translateY(-6px);
+
+            border-color: #5eead4;
+
+            box-shadow:
+                0 15px 40px
+                rgba(
+                    94,
+                    234,
+                    212,
+                    0.08
+                );
+        }
+
+
+        /* =====================================
+           FEATURED CARD
+        ====================================== */
+
+        .featured {
+
+            grid-column: span 2;
+
+            min-height: 320px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #131920,
+                    #101b1d
+                );
+
+            border-color: #30443f;
+        }
+
+
+        .featured:hover {
+
+            border-color: #5eead4;
+        }
+
+
+        /* =====================================
+           ICON
+        ====================================== */
+
+        .project-icon {
+
+            width: 58px;
+
+            height: 58px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background:
+                rgba(
+                    94,
+                    234,
+                    212,
+                    0.08
+                );
+
+            border-radius: 15px;
+
+            font-size: 30px;
+
+            margin-bottom: 18px;
+        }
+
+
+        /* =====================================
+           BADGE
+        ====================================== */
+
+        .badge {
+
+            display: inline-block;
+
+            width: fit-content;
+
+            padding: 5px 9px;
+
+            border-radius: 20px;
+
+            background:
+                rgba(
+                    94,
+                    234,
+                    212,
+                    0.08
+                );
+
+            color: #5eead4;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.5px;
+
+            margin-bottom: 12px;
+        }
+
+
+        .coming {
+
+            background: #1b222b;
+
+            color: #788493;
+        }
+
+
+        /* =====================================
+           CARD CONTENT
+        ====================================== */
+
+        .project-card h2 {
+
+            font-size: 21px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .project-card p {
+
+            color: #8b98a8;
+
+            font-size: 14px;
+
+            line-height: 1.65;
+
+            max-width: 620px;
+        }
+
+
+        /* =====================================
+           TAGS
+        ====================================== */
+
+        .tags {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 7px;
+
+            margin-top: 18px;
+        }
+
+
+        .tag {
+
+            padding: 5px 9px;
+
+            border-radius: 6px;
+
+            background: #1a222b;
+
+            color: #8995a3;
+
+            font-size: 10px;
+        }
+
+
+        /* =====================================
+           OPEN
+        ====================================== */
+
+        .open {
+
+            margin-top: auto;
+
+            padding-top: 22px;
+
+            color: #5eead4;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================
+           HOW IT WORKS
+        ====================================== */
+
+        .workflow {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    4,
+                    1fr
+                );
+
+            gap: 15px;
+
+            margin-top: 20px;
+        }
+
+
+        .step {
+
+            background: #10161d;
+
+            border: 1px solid #202a35;
+
+            border-radius: 14px;
+
+            padding: 20px;
+
+        }
+
+
+        .step-number {
+
+            color: #5eead4;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            margin-bottom: 10px;
+        }
+
+
+        .step h3 {
+
+            font-size: 14px;
+
+            margin-bottom: 6px;
+        }
+
+
+        .step p {
+
+            color: #687687;
+
+            font-size: 11px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =====================================
+           FOOTER
+        ====================================== */
+
+        footer {
+
+            text-align: center;
+
+            color: #596575;
+
+            font-size: 12px;
+
+            padding: 60px 0 30px;
+        }
+
+
+        /* =====================================
+           MOBILE
+        ====================================== */
+
+        @media (max-width: 800px) {
+
+            .featured {
+
+                grid-column: span 1;
+            }
+
+
+            .workflow {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            header {
+
+                padding-top: 22px;
+            }
+
+
+            h1 {
+
+                font-size: 38px;
+            }
+
+
+            .subtitle {
+
+                font-size: 14px;
+            }
+
+
+            .projects {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .project-card {
+
+                min-height: 260px;
+
+                padding: 22px;
+            }
+
+
+            .workflow {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .section-title {
+
+                margin-top: 40px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- =====================================
+         HEADER
+    ====================================== -->
+
+    <header>
+
+
+        <a
+            href="../"
+            class="back"
+        >
+            ← AI Tools
+        </a>
+
+
+        <div class="logo">
+            EMBED WITH CODE
+        </div>
+
+
+        <h1>
+            Start IoT Projects
+        </h1>
+
+
+        <p class="subtitle">
+
+            Build, connect and control real-world
+            projects using AI, ESP32, Arduino,
+            sensors, actuators and embedded systems.
+
+        </p>
+
+
+    </header>
+
+
+
+    <!-- =====================================
+         PROJECTS
+    ====================================== -->
+
+    <div class="section-title">
+
+        <h2>
+            Featured Projects
+        </h2>
+
+        <p>
+            Choose a project and start building.
+        </p>
+
+    </div>
+
+
+
+    <section class="projects">
+
+
+        <!-- =================================
+             FACE RECOGNITION
+        ================================== -->
+
+        <a
+            href="face-recognition/"
+            class="project-card featured"
+        >
+
+
+            <div class="project-icon">
+                🔐
+            </div>
+
+
+            <span class="badge">
+                AI + IoT • Featured
+            </span>
+
+
+            <h2>
+                Face Recognition Control
+            </h2>
+
+
+            <p>
+
+                Build an AI-powered access control
+                system using face recognition,
+                ESP32 and servo-controlled door
+                locking. Register faces, detect
+                authorized users and control your
+                hardware from a web dashboard.
+
+            </p>
+
+
+            <div class="tags">
+
+                <span class="tag">
+                    Face Recognition
+                </span>
+
+                <span class="tag">
+                    ESP32
+                </span>
+
+                <span class="tag">
+                    Servo
+                </span>
+
+                <span class="tag">
+                    IoT
+                </span>
+
+                <span class="tag">
+                    Web Control
+                </span>
+
+            </div>
+
+
+            <span class="open">
+                Start Project →
+            </span>
+
+
+        </a>
+
+
+
+        <!-- =================================
+             SMART DOOR
+        ================================== -->
+
+        <div class="project-card">
+
+
+            <div class="project-icon">
+                🚪
+            </div>
+
+
+            <span class="badge coming">
+                Coming Soon
+            </span>
+
+
+            <h2>
+                Smart Door Lock
+            </h2>
+
+
+            <p>
+
+                Control a smart door using
+                ESP32, servo motor, RFID,
+                keypad and IoT connectivity.
+
+            </p>
+
+
+            <div class="tags">
+
+                <span class="tag">
+                    ESP32
+                </span>
+
+                <span class="tag">
+                    RFID
+                </span>
+
+                <span class="tag">
+                    Servo
+                </span>
+
+            </div>
+
+
+            <span class="open">
+                Coming Soon
+            </span>
+
+
+        </div>
+
+
+
+        <!-- =================================
+             SMART AGRICULTURE
+        ================================== -->
+
+        <div class="project-card">
+
+
+            <div class="project-icon">
+                🌱
+            </div>
+
+
+            <span class="badge coming">
+                Coming Soon
+            </span>
+
+
+            <h2>
+                Smart Agriculture
+            </h2>
+
+
+            <p>
+
+                Monitor soil conditions and
+                automate irrigation using
+                ESP32, sensors and IoT.
+
+            </p>
+
+
+            <div class="tags">
+
+                <span class="tag">
+                    ESP32
+                </span>
+
+                <span class="tag">
+                    Soil Sensor
+                </span>
+
+                <span class="tag">
+                    Pump
+                </span>
+
+            </div>
+
+
+            <span class="open">
+                Coming Soon
+            </span>
+
+
+        </div>
+
+
+
+        <!-- =================================
+             AI SURVEILLANCE
+        ================================== -->
+
+        <div class="project-card">
+
+
+            <div class="project-icon">
+                🤖
+            </div>
+
+
+            <span class="badge coming">
+                Coming Soon
+            </span>
+
+
+            <h2>
+                AI Surveillance Robot
+            </h2>
+
+
+            <p>
+
+                Build a robotics platform with
+                camera-based AI detection,
+                sensors and remote control.
+
+            </p>
+
+
+            <div class="tags">
+
+                <span class="tag">
+                    AI
+                </span>
+
+                <span class="tag">
+                    Robotics
+                </span>
+
+                <span class="tag">
+                    Camera
+                </span>
+
+            </div>
+
+
+            <span class="open">
+                Coming Soon
+            </span>
+
+
+        </div>
+
+
+
+        <!-- =================================
+             GESTURE CONTROL
+        ================================== -->
+
+        <div class="project-card">
+
+
+            <div class="project-icon">
+                🖐️
+            </div>
+
+
+            <span class="badge coming">
+                Coming Soon
+            </span>
+
+
+            <h2>
+                AI Gesture Control
+            </h2>
+
+
+            <p>
+
+                Control lights, motors and
+                robots using AI-based hand
+                gesture recognition.
+
+            </p>
+
+
+            <div class="tags">
+
+                <span class="tag">
+                    AI
+                </span>
+
+                <span class="tag">
+                    OpenCV
+                </span>
+
+                <span class="tag">
+                    ESP32
+                </span>
+
+            </div>
+
+
+            <span class="open">
+                Coming Soon
+            </span>
+
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =====================================
+         WORKFLOW
+    ====================================== -->
+
+    <div class="section-title">
+
+        <h2>
+            How It Works
+        </h2>
+
+        <p>
+            Build your project step by step.
+        </p>
+
+    </div>
+
+
+    <section class="workflow">
+
+
+        <div class="step">
+
+            <div class="step-number">
+                STEP 01
+            </div>
+
+            <h3>
+                Choose Project
+            </h3>
+
+            <p>
+                Select the IoT project
+                you want to build.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                STEP 02
+            </div>
+
+            <h3>
+                Configure Hardware
+            </h3>
+
+            <p>
+                Select your board,
+                sensors and actuators.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                STEP 03
+            </div>
+
+            <h3>
+                Generate Code
+            </h3>
+
+            <p>
+                Get firmware and
+                configuration for your device.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                STEP 04
+            </div>
+
+            <h3>
+                Connect & Control
+            </h3>
+
+            <p>
+                Connect your hardware
+                and control it from the web.
+            </p>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =====================================
+         FOOTER
+    ====================================== -->
+
+    <footer>
+
+        Embed with Code •
+        Learn | Build | Innovate
+
+    </footer>
+
+
+</div>
+
+
+</body>
+
+</html>

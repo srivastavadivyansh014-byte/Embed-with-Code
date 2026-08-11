@@ -5,12 +5,15 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "netlify dev"
+    "dev": "netlify dev",
+    "build": "parcel build ai-tools/projects/face-recognition/index.html",
+    "face-dev": "parcel ai-tools/projects/face-recognition/index.html --port 3000"
   },
   "devDependencies": {
     "netlify-cli": "^23.0.0"
   },
   "dependencies": {
-    "@google/genai": "^2.16.0"
+    "@google/genai": "^2.16.0",
+    "@mediapipe/tasks-vision": "^1.0.1"
   }
 }
