@@ -16,3 +16,8 @@ pnpm-debug.log*
 # Operating system files
 .DS_Store
 Thumbs.db
+
+# Parcel build/cache
+
+.parcel-cache/
+.parcel-build/
