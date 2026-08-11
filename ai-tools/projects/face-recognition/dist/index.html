@@ -1,0 +1,723 @@
+<!DOCTYPE html><html lang=en><meta charset=UTF-8><meta name=viewport content="width=device-width, initial-scale=1.0"><title>
+        Face Recognition Control | Embed with Code
+    </title><meta name=description content="AI-powered face recognition and ESP32 IoT control project by Embed with Code."><link rel=stylesheet href=/face-recognition.36fb3dd9.css><body>
+
+
+<div class=app>
+
+
+    
+
+    <aside class=sidebar>
+
+
+        <div class=brand>
+
+            <div class=brand-icon>
+                E
+            </div>
+
+            <div>
+
+                <h2>
+                    EmbedAI
+                </h2>
+
+                <span>
+                    AI + IoT Projects
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <a href=/ai-tools/projects/ class=back-btn>
+    ← Projects
+</a>
+
+
+        <div class=sidebar-section>
+
+            <div class=sidebar-label>
+                PROJECT
+            </div>
+
+            <div class=project-name>
+                🔐 Face Recognition
+            </div>
+
+            <div class=project-name>
+                🚪 Door Control
+            </div>
+
+            <div class=project-name>
+                📡 ESP32 Device
+            </div>
+
+        </div>
+
+
+        <div class=sidebar-section>
+
+            <div class=sidebar-label>
+                TOOLS
+            </div>
+
+            <button class=side-action data-scroll=cameraSection>
+                📷 Camera
+            </button>
+
+            <button class=side-action data-scroll=registrationSection>
+                👤 Register Face
+            </button>
+
+            <button class=side-action data-scroll=deviceSection>
+                ⚡ Device
+            </button>
+
+            <button class=side-action data-scroll=activitySection>
+                📋 Activity
+            </button>
+
+        </div>
+
+
+        <div class=sidebar-bottom>
+
+            <div class=connection-mini>
+
+                <span class=status-dot></span>
+
+                System Ready
+
+            </div>
+
+            <small>
+                Embed with Code
+            </small>
+
+        </div>
+
+
+    </aside>
+
+
+
+    
+
+    <main class=main>
+
+
+        
+
+        <header class=topbar>
+
+
+            <div class=mobile-title>
+
+                <button id=mobileMenuBtn class=mobile-menu type=button>
+                    ☰
+                </button>
+
+                <div>
+
+                    <h1>
+                        Face Recognition Control
+                    </h1>
+
+                    <p>
+                        AI-powered access control
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class=top-status>
+
+                <span class=status-dot></span>
+
+                System Ready
+
+            </div>
+
+        </header>
+
+
+
+        
+
+        <div class=content>
+
+
+            
+
+            <section class=page-heading>
+
+                <div>
+
+                    <span class=eyebrow>
+                        AI + IoT PROJECT
+                    </span>
+
+                    <h2>
+                        Face Recognition Control
+                    </h2>
+
+                    <p>
+                        Recognize authorized users and
+                        control your ESP32-connected door
+                        from a web dashboard.
+                    </p>
+
+                </div>
+
+
+                <div class=project-status>
+
+                    <span class=status-dot></span>
+
+                    Ready
+
+                </div>
+
+            </section>
+
+
+
+            
+
+            <section class=stats-grid>
+
+
+                <div class=stat-card>
+
+                    <span class=stat-icon>
+                        👤
+                    </span>
+
+                    <div>
+
+                        <span class=stat-label>
+                            Registered Faces
+                        </span>
+
+                        <strong id=faceCount>
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class=stat-card>
+
+                    <span class=stat-icon>
+                        📷
+                    </span>
+
+                    <div>
+
+                        <span class=stat-label>
+                            Camera
+                        </span>
+
+                        <strong id=cameraStatus>
+                            Not Connected
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class=stat-card>
+
+                    <span class=stat-icon>
+                        ⚡
+                    </span>
+
+                    <div>
+
+                        <span class=stat-label>
+                            ESP32
+                        </span>
+
+                        <strong id=espStatus>
+                            Not Connected
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class=stat-card>
+
+                    <span class=stat-icon>
+                        🚪
+                    </span>
+
+                    <div>
+
+                        <span class=stat-label>
+                            Door
+                        </span>
+
+                        <strong id=doorStatus>
+                            LOCKED
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+            </section>
+
+
+
+            
+
+            <section id=cameraSection class=main-grid>
+
+
+                
+
+                <div class="camera-card card">
+
+
+                    <div class=card-header>
+
+                        <div>
+
+                            <span class=card-label>
+                                LIVE CAMERA
+                            </span>
+
+                            <h3>
+                                Face Recognition
+                            </h3>
+
+                        </div>
+
+
+                        <span id=cameraIndicator class="badge offline">
+                            Offline
+                        </span>
+
+                    </div>
+
+
+                    <div id=cameraBox class=camera-box>
+
+    <video id=cameraVideo autoplay muted playsinline></video>
+
+    <canvas id=faceCanvas></canvas>
+
+    <div id=cameraPlaceholder class=camera-placeholder>
+
+        <div class=camera-icon>
+            📷
+        </div>
+
+        <h4>
+            Camera Not Connected
+        </h4>
+
+        <p>
+            Allow camera access to start
+            face detection.
+        </p>
+
+        <button id=startCameraBtn class=primary-btn>
+            Start Camera
+        </button>
+
+    </div>
+
+</div>
+
+
+                    <div class=recognition-result>
+
+                        <div>
+
+                            <span>
+                                Detected Person
+                            </span>
+
+                            <strong id=recognizedName>
+                                No face detected
+                            </strong>
+
+                        </div>
+
+
+                        <div class=confidence>
+
+                            <span>
+                                Confidence
+                            </span>
+
+                            <strong id=confidenceValue>
+                                --
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+
+                
+
+                <div class="access-card card">
+
+
+                    <div class=card-header>
+
+                        <div>
+
+                            <span class=card-label>
+                                ACCESS CONTROL
+                            </span>
+
+                            <h3>
+                                Door Status
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class=door-status>
+
+                        <div id=doorIcon class=door-icon>
+                            🔒
+                        </div>
+
+
+                        <h3 id=doorText>
+                            Door Locked
+                        </h3>
+
+
+                        <p id=accessText>
+                            Waiting for authorized
+                            face recognition.
+                        </p>
+
+                    </div>
+
+
+                    <div class=door-controls>
+
+
+                        <button id=openDoorBtn class="control-btn open-btn">
+                            🔓 Open Door
+                        </button>
+
+
+                        <button id=lockDoorBtn class="control-btn lock-btn">
+                            🔒 Lock Door
+                        </button>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </section>
+
+
+
+            
+
+            <section id=registrationSection class="card registration-card">
+
+
+                <div class=card-header>
+
+                    <div>
+
+                        <span class=card-label>
+                            FACE DATABASE
+                        </span>
+
+                        <h3>
+                            Register New Face
+                        </h3>
+
+                    </div>
+
+
+                    <span class=badge>
+                        Setup
+                    </span>
+
+                </div>
+
+
+                <div class=registration-grid>
+
+
+                    <div class=register-preview>
+
+                        <div class=preview-icon>
+                            👤
+                        </div>
+
+                        <p>
+                            Face preview will appear
+                            here when the camera is active.
+                        </p>
+
+                    </div>
+
+
+                    <div class=register-form>
+
+
+                        <label for=personName>
+                            Person Name
+                        </label>
+
+
+                        <input id=personName placeholder="Enter person's name">
+
+
+                        <label for=personId>
+                            Person ID
+                        </label>
+
+
+                        <input id=personId placeholder="Example: USER001">
+
+
+                        <button id=registerFaceBtn class=primary-btn>
+                            + Capture &amp; Register Face
+                        </button>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </section>
+
+
+
+            
+
+            <section id=deviceSection class="card device-card">
+
+
+                <div class=card-header>
+
+                    <div>
+
+                        <span class=card-label>
+                            HARDWARE
+                        </span>
+
+                        <h3>
+                            ESP32 Device
+                        </h3>
+
+                    </div>
+
+
+                    <span id=deviceBadge class="badge offline">
+                        Offline
+                    </span>
+
+                </div>
+
+
+                <div class=device-grid>
+
+
+                    <div class=device-info>
+
+
+                        <div class=info-row>
+
+                            <span>
+                                Device
+                            </span>
+
+                            <strong>
+                                ESP32
+                            </strong>
+
+                        </div>
+
+
+                        <div class=info-row>
+
+                            <span>
+                                Device ID
+                            </span>
+
+                            <strong id=deviceId>
+                                Not Connected
+                            </strong>
+
+                        </div>
+
+
+                        <div class=info-row>
+
+                            <span>
+                                Firmware
+                            </span>
+
+                            <strong>
+                                Face Door Lock
+                            </strong>
+
+                        </div>
+
+
+                        <div class=info-row>
+
+                            <span>
+                                Connection
+                            </span>
+
+                            <strong id=connectionType>
+                                WiFi
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class=device-actions>
+
+                        <button id=connectDeviceBtn class=primary-btn>
+                            Connect ESP32
+                        </button>
+
+
+                        <a href=/firmware/esp32/face_door_lock.ino class=secondary-btn download>
+                            ↓ Download Firmware
+                        </a>
+
+                    </div>
+
+
+                </div>
+
+
+            </section>
+
+
+
+            
+
+            <section id=activitySection class="activity-card card">
+
+
+                <div class=card-header>
+
+                    <div>
+
+                        <span class=card-label>
+                            SECURITY
+                        </span>
+
+                        <h3>
+                            Activity Log
+                        </h3>
+
+                    </div>
+
+
+                    <button id=clearLogBtn class=clear-btn>
+                        Clear
+                    </button>
+
+                </div>
+
+
+                <div id=activityLog class=activity-log>
+
+                    <div class=empty-log>
+
+                        <span>
+                            📋
+                        </span>
+
+                        <p>
+                            No activity yet
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+            </section>
+
+
+            
+
+            <section class=build-card>
+
+
+                <div>
+
+                    <span class=eyebrow>
+                        READY TO BUILD?
+                    </span>
+
+                    <h2>
+                        Connect your hardware
+                        and start controlling.
+                    </h2>
+
+                    <p>
+                        Configure your ESP32,
+                        camera and door actuator
+                        to turn this dashboard into
+                        a real IoT access control system.
+                    </p>
+
+                </div>
+
+
+                <button id=setupBtn class="large-btn primary-btn">
+                    Start Project Setup →
+                </button>
+
+
+            </section>
+
+
+        </div>
+
+    </main>
+
+</div>
+
+
+
+<script type=module src=/face-recognition.2a3a200f.js></script>
+
+
+
