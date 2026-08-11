@@ -14,22 +14,42 @@
 
     <meta
         name="description"
-        content="AI Assistant for Electronics, Embedded Systems, IoT and Robotics"
+        content="EmbedAI by Embed with Code – AI Assistant for Electronics, Arduino, ESP32, Embedded Systems, IoT, Robotics and Programming."
     >
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 
 </head>
 
 
 <body>
 
+
 <div class="app">
 
 
-    <!-- ================= SIDEBAR ================= -->
+    <!-- =========================================
+         SIDEBAR
+    ========================================== -->
 
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
+
+
+        <!-- MOBILE CLOSE BUTTON -->
+
+        <button
+            id="closeMenuBtn"
+            class="close-menu-btn"
+            aria-label="Close menu"
+        >
+            ×
+        </button>
+
+
+        <!-- BRAND -->
 
         <div class="brand">
 
@@ -38,15 +58,21 @@
             </div>
 
             <div>
-                <h2>EmbedAI</h2>
+
+                <h2>
+                    EmbedAI
+                </h2>
 
                 <span>
                     by Embed with Code
                 </span>
+
             </div>
 
         </div>
 
+
+        <!-- BACK TO AI TOOLS -->
 
         <a
             href="../"
@@ -56,6 +82,8 @@
         </a>
 
 
+        <!-- NEW CHAT -->
+
         <button
             id="newChatBtn"
             class="new-chat"
@@ -64,10 +92,14 @@
         </button>
 
 
+        <!-- SIDEBAR TITLE -->
+
         <div class="sidebar-title">
             AI ASSISTANT
         </div>
 
+
+        <!-- INFORMATION -->
 
         <div class="info">
 
@@ -90,6 +122,8 @@
         </div>
 
 
+        <!-- SIDEBAR BOTTOM -->
+
         <div class="sidebar-bottom">
 
             <p>
@@ -102,20 +136,51 @@
 
         </div>
 
+
     </aside>
 
 
 
-    <!-- ================= MAIN ================= -->
+    <!-- =========================================
+         MOBILE OVERLAY
+    ========================================== -->
+
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay"
+    ></div>
+
+
+
+    <!-- =========================================
+         MAIN
+    ========================================== -->
 
     <main class="main">
 
 
-        <!-- HEADER -->
+        <!-- =====================================
+             TOPBAR
+        ====================================== -->
 
         <header class="topbar">
 
-            <div>
+
+            <!-- MOBILE MENU BUTTON -->
+
+            <button
+                id="menuBtn"
+                class="menu-btn"
+                aria-label="Open menu"
+                type="button"
+            >
+                ☰
+            </button>
+
+
+            <!-- TITLE -->
+
+            <div class="topbar-title">
 
                 <h1>
                     EmbedAI Assistant
@@ -129,6 +194,8 @@
             </div>
 
 
+            <!-- STATUS -->
+
             <div class="status">
 
                 <span></span>
@@ -137,11 +204,14 @@
 
             </div>
 
+
         </header>
 
 
 
-        <!-- CHAT -->
+        <!-- =====================================
+             CHAT
+        ====================================== -->
 
         <section
             id="chatContainer"
@@ -155,6 +225,7 @@
                 id="welcome"
                 class="welcome"
             >
+
 
                 <div class="ai-logo">
                     🤖
@@ -172,67 +243,83 @@
                 </p>
 
 
+                <!-- SUGGESTIONS -->
+
                 <div class="suggestions">
 
 
-                    <button class="suggestion">
-
+                    <button
+                        class="suggestion"
+                        type="button"
+                    >
                         🔌 Connect HC-SR04
                         to ESP32
-
                     </button>
 
 
-                    <button class="suggestion">
-
+                    <button
+                        class="suggestion"
+                        type="button"
+                    >
                         💻 Generate Arduino code
-
                     </button>
 
 
-                    <button class="suggestion">
-
+                    <button
+                        class="suggestion"
+                        type="button"
+                    >
                         🤖 Build an obstacle
                         avoiding robot
-
                     </button>
 
 
-                    <button class="suggestion">
-
+                    <button
+                        class="suggestion"
+                        type="button"
+                    >
                         🌱 Smart irrigation
                         system
-
                     </button>
 
 
                 </div>
 
+
             </div>
+
 
         </section>
 
 
 
-        <!-- INPUT -->
+        <!-- =====================================
+             INPUT AREA
+        ====================================== -->
 
         <div class="input-area">
 
+
             <div class="input-box">
+
 
                 <textarea
                     id="messageInput"
                     placeholder="Ask EmbedAI..."
                     rows="1"
+                    autocomplete="off"
                 ></textarea>
 
 
                 <button
                     id="sendBtn"
                     class="send-btn"
+                    type="button"
+                    aria-label="Send message"
                 >
                     ➤
                 </button>
+
 
             </div>
 
@@ -245,12 +332,15 @@
 
             </p>
 
+
         </div>
 
 
     </main>
 
+
 </div>
+
 
 
 <script src="script.js"></script>
