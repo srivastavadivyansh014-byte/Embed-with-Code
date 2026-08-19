@@ -10,7 +10,8 @@
     "face-dev": "parcel ai-tools/projects/face-recognition/index.html --port 3000"
   },
   "devDependencies": {
-    "netlify-cli": "^23.0.0"
+    "netlify-cli": "^23.0.0",
+    "parcel": "^2.16.4"
   },
   "dependencies": {
     "@google/genai": "^2.16.0",
