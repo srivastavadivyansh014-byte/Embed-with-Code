@@ -108,6 +108,13 @@ let registeredUsers = [];
 let recognitionModelsLoaded = false;
 
 let faceMatcher = null;
+// =========================================
+// WEB SERIAL CONTROLLER
+// =========================================
+
+let serialPort = null;
+let serialWriter = null;
+let serialConnected = false;
 
 
 /* =========================================
@@ -1547,50 +1554,48 @@ function updateRecognitionStatus(
 
 }
 
-
 /* =========================================
    DOOR CONTROL
 ========================================= */
 
 if (openDoorBtn) {
 
-    openDoorBtn.addEventListener(
-        "click",
-        () => {
+    openDoorBtn.addEventListener("click", async () => {
+
+        const success = await sendSerialCommand("OPEN");
+
+        if (success) {
 
             setDoorState(
-
                 true,
-
                 "Manual door open"
-
             );
 
         }
-    );
+
+    });
 
 }
 
 
 if (lockDoorBtn) {
 
-    lockDoorBtn.addEventListener(
-        "click",
-        () => {
+    lockDoorBtn.addEventListener("click", async () => {
+
+        const success = await sendSerialCommand("CLOSE");
+
+        if (success) {
 
             setDoorState(
-
                 false,
-
                 "Manual door lock"
-
             );
 
         }
-    );
+
+    });
 
 }
-
 
 /* =========================================
    SET DOOR STATE
@@ -1717,105 +1722,155 @@ function setDoorState(
 
 }
 
+/* =========================================
+   USB SERIAL CONTROLLER
+========================================= */
+
+
+
 
 /* =========================================
-   ESP32 CONNECTION
+   CONNECT CONTROLLER BUTTON
 ========================================= */
 
 if (connectDeviceBtn) {
 
     connectDeviceBtn.addEventListener(
         "click",
-        connectESP32
+        connectController
     );
 
 }
 
 
 /* =========================================
-   CONNECT ESP32
+   CONNECT CONTROLLER
 ========================================= */
 
-function connectESP32() {
+async function connectController() {
 
-    /*
-     * DEMO CONNECTION
-     *
-     * Real ESP32 communication will
-     * be added later.
-     */
+    try {
 
-    espConnected =
-        true;
+        // Check Web Serial support
+        if (!("serial" in navigator)) {
+
+            alert(
+                "Web Serial is not supported.\n\n" +
+                "Please use Google Chrome or Microsoft Edge."
+            );
+
+            return;
+        }
 
 
-    const espStatus =
-        document.getElementById(
-            "espStatus"
+        // Ask user to select USB device
+        serialPort =
+            await navigator.serial.requestPort();
+
+
+        // Open serial connection
+        await serialPort.open({
+            baudRate: 115200
+        });
+
+
+        serialConnected = true;
+        espConnected = true;
+
+
+        /* ===============================
+           UPDATE UI
+        =============================== */
+
+        const espStatus =
+            document.getElementById("espStatus");
+
+        const deviceId =
+            document.getElementById("deviceId");
+
+        const deviceBadge =
+            document.getElementById("deviceBadge");
+
+
+        if (espStatus) {
+
+            espStatus.textContent =
+                "Connected";
+
+        }
+
+
+        if (deviceId) {
+
+            deviceId.textContent =
+                "USB CONTROLLER";
+
+        }
+
+
+        if (deviceBadge) {
+
+            deviceBadge.textContent =
+                "Online";
+
+            deviceBadge.classList.remove(
+                "offline"
+            );
+
+        }
+
+
+        if (connectDeviceBtn) {
+
+            connectDeviceBtn.textContent =
+                "Controller Connected";
+
+        }
+
+
+        addLog(
+            "USB controller connected successfully",
+            "success"
         );
 
 
-    const deviceId =
-        document.getElementById(
-            "deviceId"
+        console.log(
+            "USB controller connected:",
+            serialPort
         );
 
 
-    const deviceBadge =
-        document.getElementById(
-            "deviceBadge"
+    } catch (error) {
+
+        console.error(
+            "Serial Connection Error:",
+            error
         );
 
 
-    if (espStatus) {
-
-        espStatus.textContent =
-            "Connected";
-
-    }
+        serialConnected = false;
+        espConnected = false;
 
 
-    if (deviceId) {
-
-        deviceId.textContent =
-            "ESP32-DEMO-001";
-
-    }
+        addLog(
+            "USB controller connection failed",
+            "system"
+        );
 
 
-    if (deviceBadge) {
-
-        deviceBadge.textContent =
-            "Online";
-
-
-        deviceBadge.classList.remove(
-            "offline"
+        alert(
+            "Controller connection failed.\n\n" +
+            error.message
         );
 
     }
-
-
-    if (connectDeviceBtn) {
-
-        connectDeviceBtn.textContent =
-            "ESP32 Connected";
-
-    }
-
-
-    addLog(
-
-        "ESP32 device connected",
-
-        "success"
-
-    );
 
 }
 
 
-
+/* =========================================
+   SEND SERIAL COMMAND
+========================================= */
 
 
 /* =========================================
