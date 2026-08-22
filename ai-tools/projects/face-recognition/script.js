@@ -108,6 +108,9 @@ let registeredUsers = [];
 let recognitionModelsLoaded = false;
 
 let faceMatcher = null;
+let faceAutoOpen = false;
+let lastAutoOpenTime = 0;
+const AUTO_OPEN_COOLDOWN = 5000; // 5 seconds
 // =========================================
 // WEB SERIAL CONTROLLER
 // =========================================
@@ -1453,11 +1456,72 @@ async function recognizeCurrentFace() {
                 `${confidence.toFixed(1)}%`;
 
         }
+        
 
         console.log(
             "PERSON RECOGNIZED:",
             bestMatch.label
         );
+        // =========================================
+// AUTO OPEN DOOR AFTER FACE RECOGNITION
+// =========================================
+
+const nowTime = Date.now();
+
+if (
+    serialConnected &&
+    !faceAutoOpen &&
+    (nowTime - lastAutoOpenTime >= AUTO_OPEN_COOLDOWN)
+) {
+
+    faceAutoOpen = true;
+    lastAutoOpenTime = nowTime;
+
+    console.log(
+        "Authorized face detected → OPEN"
+    );
+
+    const success =
+        await sendSerialCommand("OPEN");
+
+    if (success) {
+
+        setDoorState(
+            true,
+            "Face recognized - Door opened"
+        );
+
+        // Optional: automatically close after 5 sec
+        setTimeout(async () => {
+
+            if (serialConnected) {
+
+                const closeSuccess =
+                    await sendSerialCommand("CLOSE");
+
+                if (closeSuccess) {
+
+                    setDoorState(
+                        false,
+                        "Automatic door lock"
+                    );
+
+                }
+
+            }
+
+            faceAutoOpen = false;
+
+        }, 5000);
+
+    } else {
+
+        faceAutoOpen = false;
+
+    }
+
+}
+        
 
     } catch (error) {
 
