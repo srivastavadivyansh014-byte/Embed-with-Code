@@ -1325,13 +1325,7 @@ function drawFaceDetections(
     );
 
 
-    /*
-     * Update dashboard
-     */
-
-    updateRecognitionStatus(
-        result.detections.length
-    );
+    
 
 }
 let recognitionBusy = false;
