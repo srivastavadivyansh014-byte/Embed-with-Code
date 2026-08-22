@@ -1866,6 +1866,91 @@ async function connectController() {
     }
 
 }
+/* =========================================
+   SEND SERIAL COMMAND
+========================================= */
+
+async function sendSerialCommand(command) {
+
+    // Controller connected hai ya nahi
+    if (!serialConnected || !serialPort) {
+
+        alert("Please connect the controller first.");
+
+        return false;
+    }
+
+
+    // Port writable hai ya nahi
+    if (!serialPort.writable) {
+
+        alert("Serial port is not writable.");
+
+        return false;
+    }
+
+
+    let writer = null;
+
+    try {
+
+        // Serial writer
+        writer = serialPort.writable.getWriter();
+
+
+        // Command ko bytes mein convert karo
+        const encoder = new TextEncoder();
+
+        const data =
+            encoder.encode(command + "\n");
+
+
+        // Arduino / ESP32 ko command bhejo
+        await writer.write(data);
+
+
+        console.log(
+            "Serial command sent:",
+            command
+        );
+
+
+        addLog(
+            `Command sent: ${command}`,
+            "success"
+        );
+
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "Serial Write Error:",
+            error
+        );
+
+
+        addLog(
+            "Serial command failed",
+            "system"
+        );
+
+
+        return false;
+
+    } finally {
+
+        // Writer release karo
+        if (writer) {
+
+            writer.releaseLock();
+
+        }
+
+    }
+
+}
 
 
 /* =========================================
