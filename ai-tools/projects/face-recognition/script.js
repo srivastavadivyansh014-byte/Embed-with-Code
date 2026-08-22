@@ -156,6 +156,7 @@ function loadRegisteredFaces() {
     }
 
     updateRegisteredFaceCount();
+    rebuildFaceMatcher();
 }
 
 /* =========================================
@@ -212,6 +213,76 @@ async function loadFaceRecognitionModels() {
             "system"
         );
     }
+}
+
+function rebuildFaceMatcher() {
+
+    try {
+
+        if (!window.faceapi) {
+            console.error("face-api.js not available");
+            return;
+        }
+
+        const labeledDescriptors = [];
+
+        registeredUsers.forEach(user => {
+
+            if (
+                user.descriptor &&
+                Array.isArray(user.descriptor) &&
+                user.descriptor.length === 128
+            ) {
+
+                const descriptor =
+                    new Float32Array(user.descriptor);
+
+                labeledDescriptors.push(
+                    new faceapi.LabeledFaceDescriptors(
+                        `${user.name} (${user.id})`,
+                        [descriptor]
+                    )
+                );
+
+            }
+
+        });
+
+        if (labeledDescriptors.length > 0) {
+
+            faceMatcher =
+                new faceapi.FaceMatcher(
+                    labeledDescriptors,
+                    0.50
+                );
+
+            console.log(
+                "Face matcher ready:",
+                labeledDescriptors.length,
+                "registered faces"
+            );
+
+        } else {
+
+            faceMatcher = null;
+
+            console.log(
+                "No face descriptors available yet."
+            );
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Face matcher error:",
+            error
+        );
+
+        faceMatcher = null;
+
+    }
+
 }
 
 /*
@@ -1035,6 +1106,7 @@ async function detectFaces() {
                 drawFaceDetections(
                     result
                 );
+                recognizeCurrentFace();
 
 
             } catch (error) {
@@ -1260,6 +1332,144 @@ function drawFaceDetections(
     updateRecognitionStatus(
         result.detections.length
     );
+
+}
+let recognitionBusy = false;
+let lastRecognitionTime = 0;
+
+async function recognizeCurrentFace() {
+
+    if (
+        recognitionBusy ||
+        !cameraConnected ||
+        !cameraVideo ||
+        !faceMatcher ||
+        !recognitionModelsLoaded
+    ) {
+        return;
+    }
+
+    const now = performance.now();
+
+    // Recognition every 500ms
+    if (
+        now - lastRecognitionTime < 500
+    ) {
+        return;
+    }
+
+    lastRecognitionTime = now;
+
+    recognitionBusy = true;
+
+    try {
+
+        const detection =
+            await faceapi
+                .detectSingleFace(
+                    cameraVideo,
+                    new faceapi.TinyFaceDetectorOptions({
+                        inputSize: 416,
+                        scoreThreshold: 0.5
+                    })
+                )
+                .withFaceLandmarks()
+                .withFaceDescriptor();
+
+        if (!detection) {
+
+            return;
+
+        }
+
+        const bestMatch =
+            faceMatcher.findBestMatch(
+                detection.descriptor
+            );
+
+        console.log(
+            "Recognition:",
+            bestMatch.label,
+            "Distance:",
+            bestMatch.distance
+        );
+
+        const recognizedName =
+            document.getElementById(
+                "recognizedName"
+            );
+
+        const confidenceValue =
+            document.getElementById(
+                "confidenceValue"
+            );
+
+        if (
+            bestMatch.label === "unknown"
+        ) {
+
+            if (recognizedName) {
+
+                recognizedName.textContent =
+                    "Unknown Face";
+
+            }
+
+            if (confidenceValue) {
+
+                confidenceValue.textContent =
+                    "Not Recognized";
+
+            }
+
+            return;
+
+        }
+
+        // ==========================
+        // PERSON RECOGNIZED
+        // ==========================
+
+        if (recognizedName) {
+
+            recognizedName.textContent =
+                bestMatch.label;
+
+        }
+
+        if (confidenceValue) {
+
+            const confidence =
+                Math.max(
+                    0,
+                    Math.min(
+                        100,
+                        (1 - bestMatch.distance) * 100
+                    )
+                );
+
+            confidenceValue.textContent =
+                `${confidence.toFixed(1)}%`;
+
+        }
+
+        console.log(
+            "PERSON RECOGNIZED:",
+            bestMatch.label
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Face recognition error:",
+            error
+        );
+
+    } finally {
+
+        recognitionBusy = false;
+
+    }
 
 }
 
@@ -1635,7 +1845,7 @@ if (registerFaceBtn) {
 /* =========================================
    REGISTER FACE
 ========================================= */
-function registerFace() {
+async function registerFace() {
 
     const nameInput =
         document.getElementById("personName");
@@ -1715,6 +1925,63 @@ function registerFace() {
 
     }
 
+    // ==============================
+// GENERATE FACE DESCRIPTOR
+// ==============================
+
+if (!window.faceapi) {
+
+    alert(
+        "Face recognition engine is not available."
+    );
+
+    return;
+
+}
+
+if (!recognitionModelsLoaded) {
+
+    alert(
+        "Face recognition models are still loading. Please wait."
+    );
+
+    return;
+
+}
+
+try {
+
+    const detection =
+        await faceapi
+            .detectSingleFace(
+                registerVideo,
+                new faceapi.TinyFaceDetectorOptions({
+                    inputSize: 416,
+                    scoreThreshold: 0.5
+                })
+            )
+            .withFaceLandmarks()
+            .withFaceDescriptor();
+
+    if (!detection) {
+
+        alert(
+            "No clear face detected. Please look directly at the camera and capture again."
+        );
+
+        return;
+
+    }
+
+    const descriptor =
+        Array.from(
+            detection.descriptor
+        );
+
+    console.log(
+        "Face descriptor generated:",
+        descriptor.length
+    );
 
     // ==============================
     // CREATE USER
@@ -1728,10 +1995,47 @@ function registerFace() {
 
         image: capturedFaceImage,
 
-        registeredAt: new Date()
+        descriptor: descriptor,
+
+        registeredAt:
+            new Date().toISOString()
 
     };
 
+    // ==============================
+    // SAVE USER
+    // ==============================
+
+    registeredUsers.push(user);
+
+    sessionStorage.setItem(
+        USER_STORAGE_KEY,
+        JSON.stringify(
+            registeredUsers
+        )
+    );
+
+    // ==============================
+    // REBUILD MATCHER
+    // ==============================
+
+    rebuildFaceMatcher();
+
+} catch (error) {
+
+    console.error(
+        "Face descriptor generation error:",
+        error
+    );
+
+    alert(
+        "Unable to create face recognition data.\n\n" +
+        error.message
+    );
+
+    return;
+
+}
 
     // ==============================
     // SAVE USER IN MEMORY
