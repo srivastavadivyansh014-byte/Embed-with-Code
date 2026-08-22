@@ -2096,35 +2096,6 @@ try {
     capturedFaceImage = null;
 
 
-    // ==============================
-    // RESET PREVIEW
-    // ==============================
-
-    const registerVideo =
-        document.getElementById(
-            "registerVideo"
-        );
-
-    const registerCanvas =
-        document.getElementById(
-            "registerCanvas"
-        );
-
-    const registerPlaceholder =
-        document.getElementById(
-            "registerPlaceholder"
-        );
-
-    const capturedMessage =
-        document.getElementById(
-            "capturedMessage"
-        );
-
-    const captureFaceBtn =
-        document.getElementById(
-            "captureFaceBtn"
-        );
-
 
     if (registerCanvas) {
 
