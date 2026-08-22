@@ -7,11 +7,12 @@
   "scripts": {
     "dev": "netlify dev",
     "build": "parcel build ai-tools/projects/face-recognition/index.html --dist-dir ai-tools/projects/face-recognition/build --public-url /ai-tools/projects/face-recognition/build/",
-    "face-dev": "parcel ai-tools/projects/face-recognition/index.html --port 3000"
+    "face-dev": "parcel ai-tools/projects/face-recognition/index.html --port 300"
   },
   "devDependencies": {
     "netlify-cli": "^23.0.0",
-    "parcel": "^2.16.4"
+    "parcel": "^2.16.4",
+    "parcel-reporter-static-files-copy": "^1.5.3"
   },
   "dependencies": {
     "@google/genai": "^2.16.0",

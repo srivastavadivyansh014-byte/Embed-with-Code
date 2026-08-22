@@ -563,18 +563,48 @@
                 <div class="registration-grid">
 
 
-                    <div class="register-preview">
+                        <div class="register-preview" id="registerPreview">
 
-                        <div class="preview-icon">
-                            👤
-                        </div>
+    <video
+        id="registerVideo"
+        autoplay
+        muted
+        playsinline
+    ></video>
 
-                        <p>
-                            Face preview will appear
-                            here when the camera is active.
-                        </p>
+    <canvas
+        id="registerCanvas"
+    ></canvas>
 
-                    </div>
+    <div
+        id="registerPlaceholder"
+        class="preview-placeholder"
+    >
+        <div class="preview-icon">
+            👤
+        </div>
+
+        <p>
+            Start the camera to capture a face.
+        </p>
+    </div>
+
+    <button
+        id="captureFaceBtn"
+        class="primary-btn capture-btn"
+        type="button"
+    >
+        📸 Capture Face
+    </button>
+
+    <div
+        id="capturedMessage"
+        class="captured-message"
+    >
+        ✓ Face captured
+    </div>
+
+</div>
 
 
                     <div class="register-form">
@@ -851,7 +881,11 @@
 
 
 
-<script type="module" src="script.js"></script>
+<script src="https://unpkg.com/face-api.js@0.22.2/dist/face-api.min.js"></script>
+<script
+    type="module"
+    src="script.js"
+></script>
 
 </body>
 

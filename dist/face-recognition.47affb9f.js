@@ -207,11 +207,11 @@
       });
     }
   }
-})({"7zPpL":[function(require,module,exports,__globalThis) {
+})({"jLTzj":[function(require,module,exports,__globalThis) {
 var global = arguments[3];
 var HMR_HOST = null;
 var HMR_PORT = null;
-var HMR_SERVER_PORT = 3000;
+var HMR_SERVER_PORT = 300;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "439701173a9199ea";
 var HMR_USE_SSE = false;
@@ -717,6 +717,7 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 /* =========================================
    MEDIAPIPE
 ========================================= */ var _tasksVision = require("@mediapipe/tasks-vision");
+console.log("Face API:", window.faceapi);
 /* =========================================
    ELEMENTS
 ========================================= */ const mobileMenuBtn = document.getElementById("mobileMenuBtn");
@@ -733,21 +734,88 @@ const cameraVideo = document.getElementById("cameraVideo");
 const faceCanvas = document.getElementById("faceCanvas");
 const cameraBox = document.getElementById("cameraBox");
 const cameraPlaceholder = document.getElementById("cameraPlaceholder");
+const registerVideo = document.getElementById("registerVideo");
+const registerCanvas = document.getElementById("registerCanvas");
+const captureFaceBtn = document.getElementById("captureFaceBtn");
+const registerPlaceholder = document.getElementById("registerPlaceholder");
+const capturedMessage = document.getElementById("capturedMessage");
 /* =========================================
    STATE
 ========================================= */ let cameraConnected = false;
 let espConnected = false;
 let doorOpen = false;
-let registeredFaces = 0;
+let registeredFaces = [];
+let currentFaceDetection = null;
 let cameraStream = null;
 let faceDetectionRunning = false;
 let detectionLoopRunning = false;
 let faceDetector = null;
+let faceLandmarker = null;
+let faceLandmarkerReady = false;
 let lastVideoTime = -1;
+let capturedFaceImage = null;
+let registeredUsers = [];
+let recognitionModelsLoaded = false;
+let faceMatcher = null;
+/* =========================================
+   SESSION FACE DATABASE
+========================================= */ const FACE_STORAGE_KEY = "embedAI_registered_faces";
+const USER_STORAGE_KEY = "embedAI_registered_users";
+/*
+ * Load registered faces from current browser session.
+ */ function loadRegisteredFaces() {
+    try {
+        const savedFaces = sessionStorage.getItem(FACE_STORAGE_KEY);
+        if (savedFaces) registeredFaces = JSON.parse(savedFaces);
+        else registeredFaces = [];
+        const savedUsers = sessionStorage.getItem(USER_STORAGE_KEY);
+        if (savedUsers) registeredUsers = JSON.parse(savedUsers);
+        else registeredUsers = [];
+    } catch (error) {
+        console.error("Unable to load face database:", error);
+        registeredFaces = [];
+        registeredUsers = [];
+    }
+    updateRegisteredFaceCount();
+}
+/* =========================================
+   LOAD FACE RECOGNITION MODELS
+========================================= */ async function loadFaceRecognitionModels() {
+    try {
+        console.log("Loading face recognition models...");
+        const MODEL_URL = "./models";
+        console.log("MODEL URL:", MODEL_URL);
+        await window.faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
+        console.log("Tiny Face Detector loaded.");
+        await window.faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
+        console.log("Face Landmark model loaded.");
+        await window.faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
+        console.log("Face Recognition model loaded.");
+        recognitionModelsLoaded = true;
+        addLog("Face recognition engine ready", "success");
+    } catch (error) {
+        console.error("Recognition model error:", error);
+        recognitionModelsLoaded = false;
+        addLog("Face recognition model failed", "system");
+    }
+}
+/*
+ * Save registered faces to current session.
+ */ function saveRegisteredFaces() {
+    sessionStorage.setItem(FACE_STORAGE_KEY, JSON.stringify(registeredFaces));
+    updateRegisteredFaceCount();
+}
+/*
+ * Update dashboard count.
+ */ function updateRegisteredFaceCount() {
+    const faceCount = document.getElementById("faceCount");
+    if (faceCount) faceCount.textContent = registeredUsers.length;
+}
 /* =========================================
    MEDIAPIPE MODEL
 ========================================= */ const MEDIAPIPE_WASM_URL = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.35/wasm";
 const FACE_MODEL_URL = "https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite";
+const FACE_LANDMARKER_MODEL_URL = "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task";
 /* =========================================
    MOBILE MENU
 ========================================= */ if (mobileMenuBtn) mobileMenuBtn.addEventListener("click", ()=>{
@@ -798,6 +866,10 @@ const FACE_MODEL_URL = "https://storage.googleapis.com/mediapipe-models/face_det
          */ if (!cameraVideo) throw new Error("cameraVideo element not found in HTML.");
         cameraVideo.srcObject = cameraStream;
         await cameraVideo.play();
+        if (registerVideo) {
+            registerVideo.srcObject = cameraStream;
+            registerVideo.play();
+        }
         /*
          * Camera connected
          */ cameraConnected = true;
@@ -825,7 +897,8 @@ const FACE_MODEL_URL = "https://storage.googleapis.com/mediapipe-models/face_det
          */ addLog("Camera connected successfully", "success");
         /*
          * Start MediaPipe
-         */ await startFaceDetection();
+         */ await loadFaceLandmarker();
+        await startFaceDetection();
     } catch (error) {
         console.error("Camera Error:", error);
         /*
@@ -895,6 +968,30 @@ const FACE_MODEL_URL = "https://storage.googleapis.com/mediapipe-models/face_det
      * Reset recognition display
      */ updateRecognitionStatus(0);
     addLog("Camera disconnected", "system");
+}
+async function loadFaceLandmarker() {
+    try {
+        console.log("Loading MediaPipe Face Landmarker...");
+        const vision = await (0, _tasksVision.FilesetResolver).forVisionTasks(MEDIAPIPE_WASM_URL);
+        faceLandmarker = await (0, _tasksVision.FaceLandmarker).createFromOptions(vision, {
+            baseOptions: {
+                modelAssetPath: FACE_LANDMARKER_MODEL_URL,
+                delegate: "GPU"
+            },
+            runningMode: "VIDEO",
+            numFaces: 1,
+            minFaceDetectionConfidence: 0.5,
+            minFacePresenceConfidence: 0.5,
+            minTrackingConfidence: 0.5
+        });
+        faceLandmarkerReady = true;
+        console.log("MediaPipe Face Landmarker loaded.");
+        addLog("Face landmark engine ready", "success");
+    } catch (error) {
+        console.error("Face Landmarker Error:", error);
+        faceLandmarkerReady = false;
+        addLog("Face landmark engine failed", "system");
+    }
 }
 /* =========================================
    MEDIA PIPE FACE DETECTOR
@@ -984,6 +1081,7 @@ const FACE_MODEL_URL = "https://storage.googleapis.com/mediapipe-models/face_det
         updateRecognitionStatus(0);
         return;
     }
+    currentFaceDetection = result.detections[0] || null;
     /*
      * Draw each detected face
      */ result.detections.forEach((detection, index)=>{
@@ -1091,6 +1189,8 @@ if (lockDoorBtn) lockDoorBtn.addEventListener("click", ()=>{
     addLog("ESP32 device connected", "success");
 }
 /* =========================================
+   REGISTER FACE
+========================================= */ /* =========================================
    FACE REGISTRATION
 ========================================= */ if (registerFaceBtn) registerFaceBtn.addEventListener("click", registerFace);
 /* =========================================
@@ -1100,50 +1200,86 @@ if (lockDoorBtn) lockDoorBtn.addEventListener("click", ()=>{
     const idInput = document.getElementById("personId");
     const name = nameInput ? nameInput.value.trim() : "";
     const id = idInput ? idInput.value.trim() : "";
-    /*
-     * Validate name
-     */ if (!name) {
+    // ==============================
+    // CHECK NAME
+    // ==============================
+    if (!name) {
         alert("Please enter Person Name.");
         return;
     }
-    /*
-     * Validate ID
-     */ if (!id) {
+    // ==============================
+    // CHECK USER ID
+    // ==============================
+    if (!id) {
         alert("Please enter Person ID.");
         return;
     }
-    /*
-     * Camera required
-     */ if (!cameraConnected) {
+    // ==============================
+    // CHECK CAMERA
+    // ==============================
+    if (!cameraConnected) {
         alert("Please start the camera first.");
         return;
     }
-    /*
-     * Check if face is
-     * currently detected
-     */ if (!faceDetectionRunning) {
-        alert("Face detection is not ready yet. Please wait.");
+    // ==============================
+    // CHECK CAPTURED IMAGE
+    // ==============================
+    if (!capturedFaceImage) {
+        alert("Please capture the face first.");
         return;
     }
-    /*
-     * Current stage:
-     * We are only counting registration.
-     *
-     * Actual face embedding and
-     * identity matching comes next.
-     */ registeredFaces++;
-    const faceCount = document.getElementById("faceCount");
-    if (faceCount) faceCount.textContent = registeredFaces;
-    /*
-     * Activity log
-     */ addLog(`${name} registered (${id})`, "success");
-    /*
-     * Clear fields
-     */ if (nameInput) nameInput.value = "";
+    // ==============================
+    // CREATE USER
+    // ==============================
+    const user = {
+        name: name,
+        id: id,
+        image: capturedFaceImage,
+        registeredAt: new Date()
+    };
+    // ==============================
+    // SAVE USER IN MEMORY
+    // ==============================
+    registeredUsers.push(user);
+    sessionStorage.setItem(USER_STORAGE_KEY, JSON.stringify(registeredUsers));
+    // ==============================
+    // UPDATE FACE COUNT
+    // ==============================
+    updateRegisteredFaceCount();
+    // ==============================
+    // ACTIVITY LOG
+    // ==============================
+    addLog(`${name} registered (${id})`, "success");
+    // ==============================
+    // CLEAR FORM
+    // ==============================
+    if (nameInput) nameInput.value = "";
     if (idInput) idInput.value = "";
-    /*
-     * Confirmation
-     */ alert(`${name} registered successfully.`);
+    // ==============================
+    // RESET CAPTURE
+    // ==============================
+    capturedFaceImage = null;
+    // ==============================
+    // RESET PREVIEW
+    // ==============================
+    const registerVideo = document.getElementById("registerVideo");
+    const registerCanvas = document.getElementById("registerCanvas");
+    const registerPlaceholder = document.getElementById("registerPlaceholder");
+    const capturedMessage = document.getElementById("capturedMessage");
+    const captureFaceBtn = document.getElementById("captureFaceBtn");
+    if (registerCanvas) registerCanvas.style.display = "none";
+    if (registerVideo) registerVideo.style.display = "block";
+    if (registerPlaceholder) registerPlaceholder.style.display = "block";
+    if (capturedMessage) capturedMessage.style.display = "none";
+    if (captureFaceBtn) captureFaceBtn.textContent = "\uD83D\uDCF8 Capture Face";
+    // ==============================
+    // SUCCESS
+    // ==============================
+    alert(`${name} registered successfully.`);
+    // ==============================
+    // DEBUG
+    // ==============================
+    console.log("Registered Users:", registeredUsers);
 }
 /* =========================================
    ACTIVITY LOG
@@ -1238,6 +1374,35 @@ if (lockDoorBtn) lockDoorBtn.addEventListener("click", ()=>{
         track.stop();
     });
 });
+/* =========================================
+   LOAD SESSION DATABASE
+========================================= */ loadRegisteredFaces();
+loadFaceRecognitionModels();
+if (captureFaceBtn) captureFaceBtn.addEventListener("click", captureFace);
+function captureFace() {
+    if (!cameraConnected) {
+        alert("Please start the camera first.");
+        return;
+    }
+    if (!registerVideo) return;
+    const width = registerVideo.videoWidth;
+    const height = registerVideo.videoHeight;
+    if (!width || !height) {
+        alert("Camera is not ready yet.");
+        return;
+    }
+    registerCanvas.width = width;
+    registerCanvas.height = height;
+    const ctx = registerCanvas.getContext("2d");
+    ctx.drawImage(registerVideo, 0, 0, width, height);
+    capturedFaceImage = registerCanvas.toDataURL("image/jpeg", 0.9);
+    registerVideo.style.display = "none";
+    registerCanvas.style.display = "block";
+    if (registerPlaceholder) registerPlaceholder.style.display = "none";
+    if (captureFaceBtn) captureFaceBtn.textContent = "\uD83D\uDCF8 Capture Again";
+    if (capturedMessage) capturedMessage.style.display = "block";
+    addLog("Face image captured", "success");
+}
 
 },{"@mediapipe/tasks-vision":"bu3NE"}],"bu3NE":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -15616,6 +15781,6 @@ exports.export = function(dest, destName, get) {
     });
 };
 
-},{}]},["7zPpL","lfT2M"], "lfT2M", "parcelRequireeed8", {})
+},{}]},["jLTzj","lfT2M"], "lfT2M", "parcelRequireeed8", {})
 
 //# sourceMappingURL=face-recognition.47affb9f.js.map

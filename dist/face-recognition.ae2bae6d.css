@@ -772,4 +772,48 @@ a {
 .camera-box.camera-active .camera-placeholder {
   display: none;
 }
+
+#registerPreview {
+  border-radius: 12px;
+  width: 100%;
+  max-width: 420px;
+  height: 280px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+
+#registerPreview #registerVideo {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+#registerPreview #registerCanvas {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  display: none;
+}
+
+#registerPreview #registerPlaceholder {
+  position: absolute;
+  inset: 0;
+}
+
+#registerPreview .capture-btn {
+  z-index: 10;
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#registerPreview .captured-message {
+  z-index: 10;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
 /*# sourceMappingURL=face-recognition.ae2bae6d.css.map */

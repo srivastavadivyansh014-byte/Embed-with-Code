@@ -1172,3 +1172,56 @@ a {
 .camera-placeholder {
     display: none;
 }
+
+/* =========================================
+   FACE REGISTRATION PREVIEW
+========================================= */
+
+#registerPreview {
+    width: 100%;
+    max-width: 420px;
+    height: 280px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+/* Live registration camera */
+#registerPreview #registerVideo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Captured face image */
+#registerPreview #registerCanvas {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+}
+
+/* Placeholder */
+#registerPreview #registerPlaceholder {
+    position: absolute;
+    inset: 0;
+}
+
+/* Capture button */
+#registerPreview .capture-btn {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
+/* Captured message */
+#registerPreview .captured-message {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 10;
+}
